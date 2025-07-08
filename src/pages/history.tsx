@@ -4,8 +4,6 @@ import { ScheduleList } from "../components/ScheduleList";
 import { ScheduleEntry } from "../types/ScheduleEntry";
 import { Skeleton } from "@/components/Skeleton";
 
-const fetcher = () => fetch("/api/scrape").then((res) => res.json());
-
 interface HistoryProps {
   completedMatches: ScheduleEntry[];
 }

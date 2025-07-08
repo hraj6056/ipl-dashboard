@@ -35,19 +35,33 @@ export default async function handler(
     const parsedPoints = JSON.parse(pointsJson);
 
     const pointsTable: PointsTableEntry[] = parsedPoints.points.map(
-      (team: any, idx: number) => ({
-        position: idx + 1,
-        team: team.TeamName,
-        logoUrl: team.TeamLogo,
-        matchesPlayed: parseInt(team.Matches),
-        prevPosition: parseInt(team.PrevPosition),
-        wins: parseInt(team.Wins),
-        losses: parseInt(team.Loss),
-        points: parseInt(team.Points),
-        netRunRate: team.NetRunRate,
-        isQualified: team.IsQualified === "1",
-        performance: team.Performance?.split(",") as ("W" | "L" | "N")[],
-      })
+      (team: unknown, idx: number) => {
+        const t = team as {
+          TeamName: string;
+          TeamLogo: string;
+          Matches: string;
+          PrevPosition: string;
+          Wins: string;
+          Loss: string;
+          Points: string;
+          NetRunRate: string;
+          IsQualified: string;
+          Performance?: string;
+        };
+        return {
+          position: idx + 1,
+          team: t.TeamName,
+          logoUrl: t.TeamLogo,
+          matchesPlayed: parseInt(t.Matches),
+          prevPosition: parseInt(t.PrevPosition),
+          wins: parseInt(t.Wins),
+          losses: parseInt(t.Loss),
+          points: parseInt(t.Points),
+          netRunRate: t.NetRunRate,
+          isQualified: t.IsQualified === "1",
+          performance: t.Performance?.split(",") as ("W" | "L" | "N")[],
+        };
+      }
     );
 
     // Parse schedule
@@ -57,33 +71,51 @@ export default async function handler(
     const parsedSchedule = JSON.parse(scheduleJson);
 
     const schedule: ScheduleEntry[] = parsedSchedule.Matchsummary.map(
-      (match: any) => ({
-        matchId: match.MatchID.toString(),
-        date: match.MatchDateNew,
-        time: match.MatchTime,
-        venue: match.GroundName,
-        city: match.city,
-        homeTeam: {
-          name: match.HomeTeamName,
-          logo: match.MatchHomeTeamLogo,
-        },
-        awayTeam: {
-          name: match.AwayTeamName,
-          logo: match.MatchAwayTeamLogo,
-        },
-        status:
-          match.MatchStatus === "Post"
-            ? "completed"
-            : match.MatchStatus === "Live"
-            ? "live"
-            : "upcoming",
-        result: match.Commentss ?? "",
-        toss: match.TossDetails ?? "",
-        score: {
-          firstInnings: match.FirstBattingSummary ?? "-",
-          secondInnings: match.SecondBattingSummary ?? "-",
-        },
-      })
+      (match: unknown) => {
+        const m = match as {
+          MatchID: string | number;
+          MatchDateNew: string;
+          MatchTime: string;
+          GroundName: string;
+          city?: string;
+          HomeTeamName: string;
+          MatchHomeTeamLogo: string;
+          AwayTeamName: string;
+          MatchAwayTeamLogo: string;
+          MatchStatus: string;
+          Commentss?: string;
+          TossDetails?: string;
+          FirstBattingSummary?: string;
+          SecondBattingSummary?: string;
+        };
+        return {
+          matchId: m.MatchID.toString(),
+          date: m.MatchDateNew,
+          time: m.MatchTime,
+          venue: m.GroundName,
+          city: m.city,
+          homeTeam: {
+            name: m.HomeTeamName,
+            logo: m.MatchHomeTeamLogo,
+          },
+          awayTeam: {
+            name: m.AwayTeamName,
+            logo: m.MatchAwayTeamLogo,
+          },
+          status:
+            m.MatchStatus === "Post"
+              ? "completed"
+              : m.MatchStatus === "Live"
+              ? "live"
+              : "upcoming",
+          result: m.Commentss ?? "",
+          toss: m.TossDetails ?? "",
+          score: {
+            firstInnings: m.FirstBattingSummary ?? "-",
+            secondInnings: m.SecondBattingSummary ?? "-",
+          },
+        };
+      }
     );
 
     const liveMatchData = parsedSchedule.Matchsummary?.[0];

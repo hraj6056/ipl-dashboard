@@ -1,5 +1,6 @@
 import React from "react";
 import { ScheduleEntry } from "../types/ScheduleEntry";
+import Image from "next/image";
 
 interface Props {
   schedule: ScheduleEntry[];
@@ -16,9 +17,11 @@ export const ScheduleList: React.FC<Props> = ({ schedule }) => (
         <div className="flex justify-center items-center gap-3">
           <div className="flex items-center gap-2 max-w-[40%]">
             {match.homeTeam.logo && (
-              <img
+              <Image
                 src={match.homeTeam.logo}
                 alt={match.homeTeam.name}
+                width={24}
+                height={24}
                 className="h-6 w-6 object-contain shrink-0"
               />
             )}
@@ -32,9 +35,11 @@ export const ScheduleList: React.FC<Props> = ({ schedule }) => (
               {match.awayTeam.name}
             </span>
             {match.awayTeam.logo && (
-              <img
+              <Image
                 src={match.awayTeam.logo}
                 alt={match.awayTeam.name}
+                width={24}
+                height={24}
                 className="h-6 w-6 object-contain shrink-0"
               />
             )}
