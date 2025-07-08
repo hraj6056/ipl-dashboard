@@ -1,27 +1,102 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import ReactDOM from "react-dom";
 import { useNotification } from "@/context/NotificationContext";
 
 export const NotificationBell: React.FC = () => {
   const [open, setOpen] = useState(false);
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
   const { notifications, clearNotifications } = useNotification();
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const bellRef = useRef<HTMLButtonElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
+  // Close on outside click, but not if click is inside bell or dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        !containerRef.current.contains(event.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
       ) {
         setOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [open]);
+
+  // Position dropdown on desktop
+  useLayoutEffect(() => {
+    if (open && bellRef.current && window.innerWidth >= 640) {
+      const rect = bellRef.current.getBoundingClientRect();
+      setDropdownStyle({
+        position: "fixed",
+        top: rect.bottom + 8, // 8px gap
+        left: rect.right - 320, // 320px = dropdown width
+        width: 320,
+        zIndex: 9999,
+      });
+    } else if (open && window.innerWidth < 640) {
+      setDropdownStyle({
+        position: "fixed",
+        top: 96, // ~top-24, adjust if needed
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "90vw",
+        maxWidth: 400,
+        zIndex: 9999,
+      });
+    }
+  }, [open]);
+
+  // Dropdown content
+  const dropdown = open ? (
+    <div
+      ref={dropdownRef}
+      style={dropdownStyle}
+      className="max-h-96 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg"
+    >
+      {notifications.length === 0 ? (
+        <p className="p-4 text-gray-500 dark:text-gray-400">No notifications</p>
+      ) : (
+        <>
+          <div className="flex justify-between items-center p-2 border-b dark:border-gray-600">
+            <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+              Notifications
+            </span>
+            <button
+              onClick={clearNotifications}
+              className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              Clear all
+            </button>
+          </div>
+          <ul>
+            {notifications.map((n) => (
+              <li
+                key={n.id}
+                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm text-gray-800 dark:text-gray-200"
+              >
+                <p className="font-medium">{n.title}</p>
+                <p className="text-xs">{n.message}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  {n.timestamp}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  ) : null;
 
   return (
     <div className="relative" ref={containerRef}>
       <button
+        ref={bellRef}
         onClick={() => setOpen(!open)}
         className="relative focus:outline-none"
         aria-label="Notifications"
@@ -46,44 +121,11 @@ export const NotificationBell: React.FC = () => {
           </span>
         )}
       </button>
-
-      {open && (
-        <div className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded shadow-lg z-50">
-          {notifications.length === 0 ? (
-            <p className="p-4 text-gray-500 dark:text-gray-400">
-              No notifications
-            </p>
-          ) : (
-            <>
-              <div className="flex justify-between items-center p-2 border-b dark:border-gray-600">
-                <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">
-                  Notifications
-                </span>
-                <button
-                  onClick={clearNotifications}
-                  className="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                >
-                  Clear all
-                </button>
-              </div>
-              <ul>
-                {notifications.map((n) => (
-                  <li
-                    key={n.id}
-                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer text-sm text-gray-800 dark:text-gray-200"
-                  >
-                    <p className="font-medium">{n.title}</p>
-                    <p className="text-xs">{n.message}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {n.timestamp}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-        </div>
-      )}
+      {typeof window !== "undefined" &&
+        ReactDOM.createPortal(
+          dropdown,
+          document.getElementById("notification-portal")!
+        )}
     </div>
   );
 };
