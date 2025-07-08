@@ -10,6 +10,8 @@ It shows:
 - Interactive charts of team performance
 - Dark mode and responsive design
 
+👉 **Live site**: [https://ipl-dashboard-inky-six.vercel.app/](https://ipl-dashboard-inky-six.vercel.app/)
+
 ---
 
 ## ✨ Features
@@ -109,6 +111,8 @@ Open [http://localhost:3000](http://localhost:3000) to see the dashboard.
 
 - Scroll below points table to view points progression.
 
+- Observe the lines for each team evolving over matches.
+
 ---
 
 ## 🛠️ Available Scripts
@@ -125,7 +129,6 @@ Open [http://localhost:3000](http://localhost:3000) to see the dashboard.
 - **Tailwind CSS**
 - **SWR** (caching + revalidation)
 - **Recharts** (data visualization)
-- **Heroicons** (icons)
 
 ---
 
