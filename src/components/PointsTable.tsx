@@ -1,5 +1,6 @@
 import React from "react";
 import { PointsTableEntry } from "../types/PointsTableEntry";
+import Image from "next/image";
 
 interface Props {
   entries: PointsTableEntry[];
@@ -71,9 +72,11 @@ export const PointsTable: React.FC<Props> = ({ entries }) => (
               {/* Team */}
               <td className="p-3 flex items-center gap-2 text-black dark:text-white whitespace-nowrap relative">
                 {team.logoUrl && (
-                  <img
+                  <Image
                     src={team.logoUrl}
                     alt={team.team}
+                    width={20}
+                    height={20}
                     className="h-5 w-5 object-contain shrink-0"
                   />
                 )}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Match } from "../types/Match";
+import Image from "next/image";
 
 interface Props {
   match: Match;
@@ -12,9 +13,11 @@ export const MatchCard: React.FC<Props> = ({ match }) => (
       {/* Home Team */}
       <div className="flex items-center gap-2 max-w-[45%]">
         {match?.homeTeam?.logo && (
-          <img
+          <Image
             src={match.homeTeam.logo}
             alt={match.homeTeam.name}
+            width={24}
+            height={24}
             className="h-6 w-6 object-contain shrink-0"
           />
         )}
@@ -29,9 +32,11 @@ export const MatchCard: React.FC<Props> = ({ match }) => (
           {match?.awayTeam?.name}
         </span>
         {match?.awayTeam?.logo && (
-          <img
+          <Image
             src={match.awayTeam.logo}
             alt={match.awayTeam.name}
+            width={24}
+            height={24}
             className="h-6 w-6 object-contain shrink-0"
           />
         )}

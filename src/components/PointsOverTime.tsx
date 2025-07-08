@@ -24,7 +24,7 @@ export const PointsOverTimeChart: React.FC<Props> = ({ data }) => {
   }));
 
   const chartData = matches.map(({ idx, label }) => {
-    const row: Record<string, any> = {
+    const row: Record<string, number | string | null> = {
       matchIndex: idx,
       matchLabel: label,
     };

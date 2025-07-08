@@ -1,11 +1,12 @@
 // /pages/api/dummy-scrape.ts
 import { NextApiRequest, NextApiResponse } from "next";
 import { Match } from "../../types/Match";
+import { PointsTableEntry } from "../../types/PointsTableEntry";
 
 interface ApiResponse {
   liveMatch: Match;
-  pointsTable: any[];
-  schedule: any[];
+  pointsTable: PointsTableEntry[];
+  schedule: Match[];
 }
 
 export default async function handler(
