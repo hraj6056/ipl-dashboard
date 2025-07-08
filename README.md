@@ -1,40 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# 🏏 IPL Dashboard
 
-## Getting Started
+A modern IPL dashboard built with **Next.js**, **Tailwind CSS**, **Recharts**, and **SWR**.
 
-First, run the development server:
+It shows:
+
+- Live match details with notifications
+- Points table with real-time updates
+- Match schedule
+- Interactive charts of team performance
+- Dark mode and responsive design
+
+---
+
+## ✨ Features
+
+✅ Live match data auto-refresh every 30s  
+✅ Native and in-app notifications for:
+
+- Match start
+- Toss result
+- Score updates
+- Milestones
+
+✅ Dark Mode Toggle  
+✅ Notification Drawer with unread counts  
+✅ Fully Responsive UI  
+✅ Historical charts for points progression  
+✅ Smooth transitions between light/dark  
+✅ Caching with SWR
+
+---
+
+## 📂 Project Structure
+
+```
+/components
+  Navbar.tsx
+  MatchCard.tsx
+  PointsTable.tsx
+  ScheduleList.tsx
+  NotificationBell.tsx
+  DarkModeToggle.tsx
+  Loader.tsx
+
+/lib
+  dummyData.ts
+  utils.ts
+
+/pages
+  index.tsx        # Home page (live match + points table)
+  schedule.tsx     # Schedule page
+  history.tsx      # Historical charts
+  api/scrape.ts    # Server API to fetch & transform data
+
+/types
+  Match.ts
+  PointsTableEntry.ts
+  ScheduleEntry.ts
+  HistoryPoint.ts
+```
+
+---
+
+## 🚀 Getting Started
+
+**1️⃣ Clone the repo**
+
+```bash
+git clone https://github.com/hraj6056/ipl-dashboard.git
+cd ipl-dashboard
+```
+
+**2️⃣ Install dependencies**
+
+```bash
+npm install
+```
+
+**3️⃣ Run the development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the dashboard.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+---
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## 🧪 Testing the Project
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+### Live Updates
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Wait ~30s to see the data auto-refresh.
+- If notifications are enabled, you’ll see them pop up.
 
-## Learn More
+### Dark Mode
 
-To learn more about Next.js, take a look at the following resources:
+- Use the toggle in the navbar.
+- Verify smooth transitions and correct colors.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### Notifications
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Grant notification permissions.
+- Check bell icon badge count.
+- Open the drawer to see notification history.
 
-## Deploy on Vercel
+### Charts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Scroll below points table to view points progression.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+---
+
+## 🛠️ Available Scripts
+
+- `npm run dev` – Start dev server
+- `npm run build` – Build for production
+- `npm start` – Run production server
+
+---
+
+## 💡 Tech Stack
+
+- **Next.js 14**
+- **Tailwind CSS**
+- **SWR** (caching + revalidation)
+- **Recharts** (data visualization)
+- **Heroicons** (icons)
+
+---
+
+## ✍️ Author
+
+Harsh Raj  
+[GitHub](https://github.com/hraj6056/)  
+[LinkedIn](https://www.linkedin.com/in/harsh-raj-nitp/)
+
+---
+
+## 📃 License
+
+MIT
