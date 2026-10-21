@@ -8,9 +8,7 @@ interface Props {
 
 export const MatchCard: React.FC<Props> = ({ match }) => (
   <div className="border rounded-lg p-6 bg-white dark:bg-gray-900 dark:border-gray-700 shadow hover:shadow-lg transition duration-300 flex flex-col items-center space-y-4">
-    {/* Teams */}
     <div className="flex flex-wrap justify-center items-center gap-4 w-full">
-      {/* Home Team */}
       <div className="flex items-center gap-2 max-w-[45%]">
         {match?.homeTeam?.logo && (
           <Image
